@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: #ffffff;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 60px;
+    }
+
+    /* Search */
+    .search-wrap {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 64px;
+    }
+
+    .search-wrap input {
+      flex: 1;
+      background: transparent;
+      border: 0.5px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 12px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      letter-spacing: 0.02em;
+      transition: all 0.3s;
+
+    }
+
+    .search-wrap input::placeholder { color: rgba(255,255,255,0.4); }
+    .search-wrap input:focus { 
+      border-color: rgba(255,255,255,0.5);
+      box-shadow: 0 0 15px rgba(255,255,255,0.15); 
+    }
+
+    .search-wrap button {
+      background: #ffffff;
+      color: #000;
+      border-radius: 4px;
+      padding: 12px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      border: 0.5px solid transparent;
+      white-space: nowrap;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s;;
+    }
+
+    .search-wrap button:hover { 
+      opacity: 0.8;
+      background: #000;
+      color: #ffffff;
+      border: 0.5px solid rgba(255,255,255,0.5);
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+
+    /* Main weather display */
+    .main {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .city-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 10vw, 96px);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .country {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .temperature {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 18vw, 160px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .temp-unit {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      vertical-align: super;
+    }
+
+    .condition {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .card {
+      background: #0d0d0d;
+      border: 0.5px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 22px 18px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.06), inset 0 0 12px rgba(255,255,255,0.02);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(255,255,255,0.35);
+      box-shadow: 0 0 30px rgba(255,255,255,0.1), inset 0 0 16px rgba(255,255,255,0.04);
+    }
+
+    .card-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 14px;
+    }
+
+    .card-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .card-unit {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.35);
+      margin-top: 5px;
+    }
+
+    .card:hover {
+      border-color: rgba(255,255,255,0.35);
+      box-shadow: 0 0 30px rgba(255,255,255,0.1), inset 0 0 16px rgba(255,255,255,0.04);
+      transform: translateY(-6px); /* add this line */
+    }
+
+    /* Error */
+    .error {
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .search-wrap { margin-bottom: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Search bar -->
+  <div class="search-wrap">
+    <input type="text" id="cityInput" placeholder="Enter city..." />
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <!-- Error message -->
+  <div class="error" id="error">Wrong city entered. Please try again</div>
+
+  <!-- Main weather -->
+  <div class="main">
+    <div class="city-name" id="cityName">—</div>
+    <div class="country" id="countryName">Search a city to begin</div>
+    <div class="temperature" id="temperature">—<span class="temp-unit">°C</span></div>
+    <div class="condition" id="condition">—</div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Humidity</div>
+      <div class="card-value" id="humidity">—</div>
+      <div class="card-unit">percent</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Wind Speed</div>
+      <div class="card-value" id="wind">—</div>
+      <div class="card-unit">km/h</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Feels Like</div>
+      <div class="card-value" id="feelsLike">—</div>
+      <div class="card-unit">°C</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Visibility</div>
+      <div class="card-value" id="visibility">—</div>
+      <div class="card-unit">km</div>
+    </div>
+  </div>
+
+  <!-- Write your JS in script.js -->
+  <script src="project_1.js"></script>
+
+</body>
+</html>
