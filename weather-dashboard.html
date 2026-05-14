@@ -169,7 +169,7 @@
       transform: translateY(-6px); /* add this line */
     }
 
-    /* Error */
+
     .error {
       color: rgba(255,255,255,0.4);
       font-size: 13px;
@@ -178,7 +178,7 @@
       display: none;
     }
 
-    /* Mobile */
+
     @media (max-width: 600px) {
       .cards { grid-template-columns: repeat(2, 1fr); }
       .search-wrap { margin-bottom: 44px; }
@@ -187,16 +187,16 @@
 </head>
 <body>
 
-  <!-- Search bar -->
+
   <div class="search-wrap">
     <input type="text" id="cityInput" placeholder="Enter city..." />
     <button id="searchBtn">Search</button>
   </div>
 
-  <!-- Error message -->
+
   <div class="error" id="error">Wrong city entered. Please try again</div>
 
-  <!-- Main weather -->
+
   <div class="main">
     <div class="city-name" id="cityName">—</div>
     <div class="country" id="countryName">Search a city to begin</div>
@@ -204,7 +204,7 @@
     <div class="condition" id="condition">—</div>
   </div>
 
-  <!-- Stat cards -->
+
   <div class="cards">
     <div class="card">
       <div class="card-label">Humidity</div>
@@ -227,8 +227,6 @@
       <div class="card-unit">km</div>
     </div>
   </div>
-
-  <!-- Write your JS in script.js -->
   <script src="script.js"></script>
 
 </body>
