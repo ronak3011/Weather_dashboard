@@ -25,4 +25,4 @@ A clean, minimal weather dashboard built with HTML, CSS, and JavaScript.
 
 ## Author
 
-Ronak
+Ronak Shah
